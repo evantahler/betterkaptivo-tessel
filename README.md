@@ -20,6 +20,6 @@ copy `config.json.example` to `config.json` in your project and fill in:
 
 Wire up your button so that pressing it would connect the ground to the pin (Tessel has a default of 'high' for digital inputs)
 
-push the code to your tessel with `t2 push index.json`
+push the code to your tessel with `t2 push index.js`
 
 Profit.
