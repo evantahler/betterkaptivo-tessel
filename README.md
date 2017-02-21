@@ -14,6 +14,12 @@ Update the code on `./node_modules/tessel-av/` per https://forums.tessel.io/t/de
 
 Generate a slack API token @ https://my.slack.com/apps/manage/custom-integrations.  Make a new `bot`
 
-copy `config.json.example` to `config.json` in your project
+copy `config.json.example` to `config.json` in your project and fill in:
+- `slackToken` from above
+- `rooms` are the human-readable names for the rooms you want to post images into, ie: `general`
+
+Wire up your button so that pressing it would connect the ground to the pin (Tessel has a default of 'high' for digital inputs)
 
 push the code to your tessel with `t2 push index.json`
+
+Profit.
