@@ -2,7 +2,7 @@
 
 ![https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/log.png?raw=true](https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/log.png?raw=true)
 
-![https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/log.png?raw=true](https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/log.png?raw=true)
+![https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/slack.png?raw=true](https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/slack.png?raw=true)
 
 Install Tessel CLI
 `npm install -g t2-cli`
