@@ -2,19 +2,20 @@
 
 const fs = require('fs')
 const path = require('path')
-const request = require('request')
+const tessel = require('tessel')
 const av = require('tessel-av')
-
-const TIMEOUT = 1000 * 5
-const ENDPOINT = 'http://192.168.7.25:8080'
-const UUID = fs.readFileSync(path.join(__dirname, '.uuid')).toString().trim()
-const IMAGE = path.join(__dirname, '.image.jpg')
+const Slack = require('node-slack-upload')
+const LEDTimeout = 1000
+const config = require(path.join(__dirname, 'config.json'))
+const ImagePath = path.join(__dirname, '.image.jpg')
 
 const camera = new av.Camera({
   width: 1280,
   height: 720,
   port: 8080
 })
+
+let slack = new Slack(config.slackToken)
 
 function log (message, payload) {
   if (payload) {
@@ -28,31 +29,10 @@ function logError (message) {
   console.error(`[ERROR] ${new Date()} | ${message}`)
 }
 
-function main () {
-  saveImage(() => {
-    log('uploading latest image')
-    let url = `${ENDPOINT}/api/device/upload`
-
-    request.post({
-      url: url,
-      formData: {
-        file: fs.createReadStream(IMAGE),
-        deviceUuid: UUID
-      }
-    }, (error, response, body) => {
-      if (error) { return logError(error) }
-      if (!body) { return logError(new Error('no response from server')) }
-      body = JSON.parse(body)
-      log('response from server', body)
-      setTimeout(main, TIMEOUT)
-    })
-  })
-}
-
 function saveImage (callback) {
   // log('saving image to disk')
   let capture = camera.capture()
-  let writeStream = fs.createWriteStream(IMAGE)
+  let writeStream = fs.createWriteStream(ImagePath)
   capture.pipe(writeStream)
   capture.on('end', () => {
     log('image updated on disk')
@@ -61,13 +41,55 @@ function saveImage (callback) {
 
   capture.on('error', error => {
     logError(error)
-    return callback()
+  })
+}
+
+function uploadImage () {
+  slack.uploadFile({
+    file: fs.createReadStream(ImagePath),
+    filetype: 'jpg',
+    title: `whiteboard @ ${new Date()}`,
+    channels: config.channels
+  }, function (error, data) {
+    if (error) {
+      logError(error)
+    } else {
+      log('Uploaded file details', data)
+    }
+  })
+}
+
+function checkButtons () {
+  let counter = 0
+  let groups = ['A', 'B']
+  groups.forEach((group) => {
+    [0, 1, 2, 3, 4, 5, 6, 7].forEach((pinId) => {
+      counter++
+      let pin = tessel.port[group].pin[pinId]
+      pin.read((error, value) => {
+        counter--
+        if (error) { logError(error) }
+        if (value === 1) { buttonPress(group, pinId) }
+        if (counter === 0) { checkButtons() }
+      })
+    })
+  })
+}
+
+function buttonPress (group, pinId) {
+  log(`press ${group}#${pinId}`)
+
+  saveImage(() => {
+    uploadImage()
   })
 }
 
 log('*** Starting ***')
-log('uuid', UUID)
-log('endpoint', ENDPOINT)
-log('timeout', TIMEOUT)
 
-main()
+setInterval(() => {
+  // blink to show that the app is running
+  tessel.led[2].toggle()
+}, LEDTimeout)
+
+buttonPress('x', 'x')
+// checkButtons()
