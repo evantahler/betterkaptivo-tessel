@@ -1,5 +1,8 @@
 # Better Kaptivo Tessel
 
+
+![https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/hardware.png?raw=true](https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/hardware.png?raw=true)
+
 ![https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/log.png?raw=true](https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/log.png?raw=true)
 
 ![https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/slack.png?raw=true](https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/slack.png?raw=true)
