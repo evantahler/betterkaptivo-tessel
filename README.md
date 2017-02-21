@@ -1,5 +1,6 @@
 # Better Kaptivo Tessel
 
+The Kaptivo camera's hardware is awesome... but its software... misses the mark.  All I want is to hit a button and send the image to Slack.  Here's how to do that with a [Tessel](https://tessel.io/)
 
 ![https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/hardware.jpg?raw=true](https://github.com/evantahler/betterkaptivo-tessel/blob/master/images/hardware.jpg?raw=true)
 
